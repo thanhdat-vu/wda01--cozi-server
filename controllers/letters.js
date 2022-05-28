@@ -49,3 +49,29 @@ export const deleteLetter = async (req, res) => {
 
     res.json({ message: "Letter deleted successfully." });
 }
+
+export const sayThanks = async (req, res) => {
+    const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).send(`No letter with id: ${id}`);
+
+
+    await Letters.findByIdAndUpdate(id, { thanked: true }, { new: true });
+
+    res.json({ message: 'Successfully say thanks.' });
+}
+
+export const getCoziPoints = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const coziPoints = await Letters.count({ sender: id, thanked: true });
+        
+        console.log(coziPoints);
+
+        res.status(200).json(coziPoints);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}

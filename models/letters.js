@@ -11,6 +11,10 @@ const letterSchema = mongoose.Schema({
     body: String,
     to: String,
     receiver: String,
+    thanked: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 export default mongoose.model('Letters', letterSchema);
